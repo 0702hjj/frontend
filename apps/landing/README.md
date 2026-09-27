@@ -44,12 +44,12 @@ examples/content/
 新增正式内容时，在对应目录创建文件：
 
 - 公告（`.md` 或 `.mdx`）：`title`、`summary`、`date`，可选 `tags`、`level`、`pinned`、`importance`、`expires` 和封面；带有 `镜像站` 标签的公告也会显示在 Mirrors；
-- 活动（`.md` 或 `.mdx`）：`title`、`summary`、`date`，可选 `type`、`location`、`upcoming`、`pinned`、`importance` 和封面；
+- 活动（`.md` 或 `.mdx`）：`title`、`summary`、`date`，可选 `type`、`location`、`status`、`pinned`、`importance` 和封面；
 - 文章（`.md` 或 `.mdx`）：`title`、`summary`、`date`，可选 `author`、`pinned`、`importance` 和封面；
 - 服务与项目（`.md`）：`name`、`description`、`href`，可选 `order`、`category`、`scope`、`status` 和 `since`；
 - 友链（`.yaml`）：`name`、`href`，可选 `description`、`logo` 和 `order`。
 
-`importance` 默认为 `normal`，普通内容不需要填写。只有需要进入首页展示板的内容才写 `importance: important`；展示板按日期倒序取最新三条，最新一条使用大卡片，其余两条使用小卡片。重要内容仍同时出现在普通动态列表中。
+活动 `status`（默认 `未开始`）为手动维护的状态：活动状态变化时手动改为 `进行中` 或 `已结束`，站点以不同颜色的徽章展示。`importance` 默认为 `normal`，普通内容不需要填写。只有需要进入首页展示板的内容才写 `importance: important`；展示板按日期倒序取最新三条，最新一条使用大卡片，其余两条使用小卡片。已结束的活动不会进入展示板；其余重要内容仍同时出现在普通动态列表中。
 
 不要把待发布的正式内容写进 `examples/`。示例内容只用于组件开发、响应式检查和演示构建。生产部署应执行 `bun run build`，不得设置 `MOCK=true`。
 

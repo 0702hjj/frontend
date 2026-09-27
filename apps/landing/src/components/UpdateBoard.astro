@@ -1,5 +1,6 @@
 ---
 import type { UpdateEntry } from '../lib/updates';
+import { EVENT_STATUS_TONE } from '../lib/updates';
 import Badge from './Badge.astro';
 import TagBadges from './TagBadges.astro';
 import ContentImage from './content/ContentImage.astro';
@@ -11,8 +12,11 @@ interface Props {
 type BadgeTone = 'primary' | 'secondary' | 'success' | 'warning' | 'muted';
 
 const { updates } = Astro.props;
+// Ended events never take a featured slot regardless of importance; the
+// remaining important updates are curated manually via the importance field.
 const importantUpdates = updates
   .filter((entry) => entry.importance === 'important')
+  .filter((entry) => entry.status !== '已结束')
   .sort((a, b) => b.date.getTime() - a.date.getTime())
   .slice(0, 3);
 const primaryUpdate = importantUpdates[0];
@@ -52,9 +56,9 @@ const getTone = (entry: UpdateEntry): BadgeTone =>
             {primaryUpdate.meta && (
               <Badge tone="muted">{primaryUpdate.meta}</Badge>
             )}
-            {primaryUpdate.upcoming && (
-              <Badge tone="warning" mono>
-                即将举行
+            {primaryUpdate.status && (
+              <Badge tone={EVENT_STATUS_TONE[primaryUpdate.status]} mono>
+                {primaryUpdate.status}
               </Badge>
             )}
             <time class="ui-mono" datetime={primaryUpdate.date.toISOString()}>
@@ -110,6 +114,11 @@ const getTone = (entry: UpdateEntry): BadgeTone =>
                   <Badge tone={getTone(entry)}>{entry.label}</Badge>
                   <TagBadges tags={entry.tags} />
                   {entry.meta && <Badge tone="muted">{entry.meta}</Badge>}
+                  {entry.status && (
+                    <Badge tone={EVENT_STATUS_TONE[entry.status]} mono>
+                      {entry.status}
+                    </Badge>
+                  )}
                   <time
                     class="ui-mono text-[11px] text-muted-fg"
                     datetime={entry.date.toISOString()}

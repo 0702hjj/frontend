@@ -3,6 +3,17 @@ import { contentPath, type ContentImageSource } from './content';
 
 export type UpdateKind = 'announcement' | 'event' | 'article';
 
+export type EventStatus = '未开始' | '进行中' | '已结束';
+
+export const EVENT_STATUS_TONE: Record<
+  EventStatus,
+  'warning' | 'success' | 'muted'
+> = {
+  未开始: 'warning',
+  进行中: 'success',
+  已结束: 'muted',
+};
+
 export interface UpdateEntry {
   kind: UpdateKind;
   label: '公告' | '活动' | '文章';
@@ -13,7 +24,7 @@ export interface UpdateEntry {
   pinned: boolean;
   importance: 'normal' | 'important';
   warning: boolean;
-  upcoming: boolean;
+  status?: EventStatus;
   tags: string[];
   meta?: string;
   cover?: ContentImageSource;
@@ -40,7 +51,7 @@ export async function getUpdates(now = new Date()): Promise<UpdateEntry[]> {
         pinned: entry.data.pinned,
         importance: entry.data.importance,
         warning: entry.data.level === 'warn',
-        upcoming: false,
+        status: undefined,
         tags: entry.data.tags,
         cover: entry.data.cover,
         coverAlt: entry.data.coverAlt,
@@ -55,7 +66,7 @@ export async function getUpdates(now = new Date()): Promise<UpdateEntry[]> {
       pinned: entry.data.pinned,
       importance: entry.data.importance,
       warning: false,
-      upcoming: entry.data.upcoming,
+      status: entry.data.status,
       tags: [],
       meta: entry.data.type,
       cover: entry.data.cover,
@@ -71,7 +82,7 @@ export async function getUpdates(now = new Date()): Promise<UpdateEntry[]> {
       pinned: entry.data.pinned,
       importance: entry.data.importance,
       warning: false,
-      upcoming: false,
+      status: undefined,
       tags: [],
       meta: `@${entry.data.author}`,
       cover: entry.data.cover,
