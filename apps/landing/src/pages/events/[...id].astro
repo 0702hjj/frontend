@@ -6,6 +6,7 @@ import Badge from '../../components/Badge.astro';
 import RelatedLink from '../../components/content/RelatedLink.astro';
 import ContentImage from '../../components/content/ContentImage.astro';
 import { contentPath } from '../../lib/content';
+import { EVENT_STATUS_TONE } from '../../lib/updates';
 
 export async function getStaticPaths() {
   const events = await getCollection('events', ({ data }) => !data.hide);
@@ -28,7 +29,7 @@ const {
   location,
   type,
   summary,
-  upcoming,
+  status,
   cover,
   coverAlt,
 } = event.data;
@@ -65,9 +66,9 @@ const dateLabel = endDate
       >
         <Badge tone="secondary" size="md">活动</Badge>
         <Badge tone="muted" size="md">{type}</Badge>
-        {upcoming && (
-            <Badge tone="warning" size="md" mono>
-              即将举行
+        {status && (
+            <Badge tone={EVENT_STATUS_TONE[status]} mono>
+              {status}
             </Badge>
           )}
       </div>

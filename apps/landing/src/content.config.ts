@@ -63,7 +63,7 @@ const events = defineCollection({
       hide: z.boolean().default(false),
       pinned: z.boolean().default(false),
       importance: z.enum(['normal', 'important']).default('important'),
-      upcoming: z.boolean().default(false),
+      status: z.enum(['未开始', '进行中', '已结束']).default('未开始'),
       cover: z.union([z.url(), z.string().startsWith('/'), image()]).optional(),
       coverAlt: z.string().optional(),
     }),

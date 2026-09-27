@@ -2,6 +2,7 @@
 import Badge from './Badge.astro';
 import TagBadges from './TagBadges.astro';
 import type { UpdateEntry } from '../lib/updates';
+import { EVENT_STATUS_TONE } from '../lib/updates';
 
 interface Props {
   entry: UpdateEntry;
@@ -41,7 +42,7 @@ const badgeTone = entry.warning
   ></span>
   <span
     class="absolute top-1.5 left-0 h-[11px] w-[11px] rounded-full border-2 border-page-bg"
-    style={`background: ${accent};${entry.upcoming ? ` box-shadow: 0 0 0 4px color-mix(in srgb, ${accent} 25%, transparent);` : ''}`}
+    style={`background: ${accent};${entry.status === '进行中' ? ` box-shadow: 0 0 0 4px color-mix(in srgb, ${accent} 25%, transparent);` : ''}`}
     aria-hidden="true"
   ></span>
 
@@ -60,9 +61,9 @@ const badgeTone = entry.warning
             置顶
           </Badge>
         )}
-      {entry.upcoming && (
-          <Badge tone="warning" mono>
-            即将举行
+      {entry.status && (
+          <Badge tone={EVENT_STATUS_TONE[entry.status]} mono>
+            {entry.status}
           </Badge>
         )}
       {entry.meta && <Badge tone="muted">{entry.meta}</Badge>}
